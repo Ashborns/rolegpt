@@ -13,7 +13,7 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
 - **Node.js** (disarankan versi terbaru)
 - **npm** atau **yarn** (disertakan dengan Node.js)
 - **Visual Studio Code** (editor pilihan)
-
+- **pastikan memiliki Database dengan nama rolegpt_db (MySql)** (untuk isi db akan terbuat otomatis)
 ---
 
 ## 🚀 Langkah-Langkah Instalasi
