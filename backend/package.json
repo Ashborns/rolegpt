@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "ashgpt.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "groq-sdk": "^0.8.0",
+    "mysql2": "^3.11.4"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
