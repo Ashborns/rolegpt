@@ -23,13 +23,13 @@ export const chatService = {
     return response.json();
   },
 
-  createCharacter: async (name, description) => {
+  createCharacter: async (name, description, avatarUrl) => {
     const response = await fetch(`${API_BASE_URL}/characters`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, description }),
+      body: JSON.stringify({ name, description, avatarUrl }),
     });
     if (!response.ok) {
       throw new Error('Network response was not ok');

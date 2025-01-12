@@ -1,25 +1,33 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Settings, Mic, RefreshCw, X, Trash2, Plus } from 'lucide-react';
 import { chatService } from '../services/api';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function ChatbotApp() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(searchParams.get('settings') === 'true');
   const [characters, setCharacters] = useState([]);
   const [characterToDelete, setCharacterToDelete] = useState(null);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-  const [currentCharacter, setCurrentCharacter] = useState('default');
+  const [currentCharacter, setCurrentCharacter] = useState(searchParams.get('character') || 'default');
   const [model, setModel] = useState('groq');
   const [audioEnabled, setAudioEnabled] = useState(true);
-  const messagesEndRef = useRef(null);
   const [isAddingCharacter, setIsAddingCharacter] = useState(false);
   const [showDeleteCharacters, setShowDeleteCharacters] = useState(false);
+  const messagesEndRef = useRef(null);
+  
   const [newCharacter, setNewCharacter] = useState({
     name: '',
     description: '',
-    avatar: null
+    avatarUrl: null
   });
 
 
@@ -28,10 +36,10 @@ export default function ChatbotApp() {
       await chatService.createCharacter(
         newCharacter.name,
         newCharacter.description,
-        newCharacter.avatar || 'default-avatar.jpg'
+        newCharacter.avatarUrl || 'default-avatarUrl.jpg'
       );
       setIsAddingCharacter(false);
-      setNewCharacter({ name: '', description: '', avatar: null });
+      setNewCharacter({ name: '', description: '', avatarUrl: null });
       await loadCharacters(); // Reload character list
     } catch (error) {
       console.error('Error adding character:', error);
@@ -65,12 +73,39 @@ export default function ChatbotApp() {
     loadCharacters();
   }, []);
 
+  useEffect(() => {
+    const initializeChat = async () => {
+      await loadCharacters();
+      const selectedCharacter = searchParams.get('character');
+      if (selectedCharacter) {
+        await handleCharacterChange(selectedCharacter);
+      }
+    };
+
+    initializeChat();
+  }, []);
+
   const loadCharacters = async () => {
     try {
       const charactersList = await chatService.getCharacters();
       setCharacters(charactersList);
     } catch (error) {
       console.error('Error loading characters:', error);
+    }
+  };
+
+  const handleCharacterChange = async (character) => {
+    try {
+      await chatService.setCurrentCharacter(character);
+      setCurrentCharacter(character);
+      setMessages([]); // Clear chat history when changing character
+      
+      // Update URL without navigating
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set('character', character);
+      navigate(`/chat?${newParams.toString()}`, { replace: true });
+    } catch (error) {
+      console.error('Error changing character:', error);
     }
   };
 
@@ -84,22 +119,30 @@ export default function ChatbotApp() {
       const characterData = {
         name: newCharacter.name.trim(),
         description: newCharacter.description.trim() || '',
-        avatar: newCharacter.avatar || '/default-avatar.jpg', // Default avatar
+        avatarUrl: newCharacter.avatarUrl || '/default-avatarUrl.jpg',
       };
 
-      await chatService.createCharacter(
+      const createdCharacter = await chatService.createCharacter(
         characterData.name,
         characterData.description,
-        characterData.avatar
+        characterData.avatarUrl
       );
 
       resetAddCharacterForm();
       await loadCharacters();
+      
+      // Optionally switch to the new character
+      if (createdCharacter?.id) {
+        await handleCharacterChange(createdCharacter.id);
+      }
     } catch (error) {
       console.error('Error creating character:', error);
     }
   };
 
+  const handleBackToHome = () => {
+    navigate('/');
+  };
 
   // Reset add character form
   const resetAddCharacterForm = () => {
@@ -107,7 +150,7 @@ export default function ChatbotApp() {
     setNewCharacter({
       name: '',
       description: '',
-      avatar: null
+      avatarUrl: null
     });
   };
 
@@ -171,16 +214,7 @@ export default function ChatbotApp() {
     }
   };
 
-  const handleCharacterChange = async (character) => {
-    try {
-      await chatService.setCurrentCharacter(character);
-      setCurrentCharacter(character);
-      setMessages([]); // Clear chat history when changing character
-    } catch (error) {
-      console.error('Error changing character:', error);
-    }
-  };
-
+ 
   const handleModelChange = async (newModel) => {
     try {
       await chatService.setModel(newModel);
@@ -316,7 +350,12 @@ export default function ChatbotApp() {
       <div className="w-64 bg-gray-900 text-white p-4 flex flex-col justify-between">
         <div>
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-xl font-bold">Chatbot</h1>
+            <button
+              onClick={handleBackToHome}
+              className="text-xl font-bold hover:text-gray-300"
+            >
+              ← Home
+            </button>
             <button
               onClick={() => setShowSettings(!showSettings)}
               className="p-2 hover:bg-gray-700 rounded"
@@ -362,20 +401,35 @@ export default function ChatbotApp() {
       <div className="flex-1 flex flex-col">
         {/* Chat Messages */}
         <div className="flex-1 overflow-y-auto p-4">
-          {messages.map((message, index) => (
-            <div key={index} className={`mb-4 ${message.role === 'user' ? 'ml-auto' : ''}`}>
-              <div
-                className={`max-w-3xl rounded-lg p-4 ${
-                  message.role === 'user' ? 'bg-blue-600 text-white ml-auto' : 'bg-white shadow'
-                }`}
-              >
-                <p className="text-sm mb-1">
-                  {message.role === 'user' ? 'You' : 'Assistant'}
-                </p>
-                <p>{message.content}</p>
-              </div>
-            </div>
-          ))}
+        
+{messages.map((message, index) => (
+  <div key={index} className={`mb-4 ${message.role === 'user' ? 'ml-auto' : ''}`}>
+  <div className={`max-w-3xl rounded-lg p-4 ${
+    message.role === 'user' ? 'bg-blue-600 text-white ml-auto' : 'bg-white shadow'
+  }`}>
+    <p className="text-sm mb-1">
+      {message.role === 'user' ? 'You' : characters.find(char => char.id === currentCharacter)?.name || 'Assistant'}
+    </p>
+    <ReactMarkdown 
+      components={{
+        code: ({node, inline, className, children, ...props}) => (
+          <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5" {...props}>
+            {children}
+          </code>
+        ),
+        strong: ({node, children}) => (
+          <strong className="font-bold">{children}</strong>
+        ),
+        em: ({node, children}) => (
+          <em className="italic">{children}</em>
+        )
+      }}
+    >
+      {message.content}
+    </ReactMarkdown>
+  </div>
+</div>
+))}
           {loading && (
             <div className="max-w-3xl rounded-lg p-4 bg-white shadow">
               <div className="flex items-center gap-2">

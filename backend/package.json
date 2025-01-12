@@ -15,8 +15,11 @@
     "@google/generative-ai": "^0.21.0",
     "cors": "^2.8.5",
     "express": "^4.21.1",
+    "fs": "^0.0.1-security",
     "groq-sdk": "^0.8.0",
-    "mysql2": "^3.11.4"
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.11.4",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

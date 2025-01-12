@@ -1,116 +1,70 @@
-# Chatbot App Setup Guide
+# Getting Started with Create React App
 
-**by Fathi**
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Proyek ini adalah aplikasi chatbot berbasis React menggunakan **Tailwind CSS** 
-untuk desain responsif dan **lucide-react** untuk ikon.
+## Available Scripts
 
----
+In the project directory, you can run:
 
-## 📋 Persyaratan
+### `npm start`
 
-Pastikan Anda telah menginstal perangkat lunak berikut:
-- **Node.js** (disarankan versi terbaru)
-- **npm** atau **yarn** (disertakan dengan Node.js)
-- **Visual Studio Code** (editor pilihan)
-- **pastikan memiliki Database dengan nama rolegpt_db (MySql)** (untuk isi db akan terbuat otomatis)
----
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## 🚀 Langkah-Langkah Instalasi
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-### 1. **Clone Repository**
-Clone repository ini ke komputer lokal Anda:
+### `npm test`
 
-```bash
-git clone <URL-REPOSITORY-ANDA>
-cd <NAMA-DIREKTORI-PROYEK>
-```
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### 2. **Struktur Proyek**
-```
-ROLEGPTUI/
-├── backend/
-│   ├── node_modules/
-│   ├── ashgpt.js
-│   ├── database.js
-│   ├── package-lock.json
-│   ├── package.json
-│   └── server.js
-├── node_modules/
-├── public/
-├── src/
-│   ├── pages/
-│   │   ├── tampilan.js
-│   ├── services/
-│   │   └── api.js
-│   ├── App.css
-│   ├── App.js
-│   ├── App.test.js
-│   ├── index.css
-│   ├── index.js
-│   ├── logo.svg
-│   ├── reportWebVitals.js
-│   ├── setupProxy.js
-│   └── setupTests.js
-├── .gitignore
-├── BACAAKU.md
-├── package-lock.json
-├── package.json
-├── README.md
-└── tailwind.config.js
-```
+### `npm run build`
 
-### 3. **Pasang Dependensi dan cara menjalankan proyek**
-Pasang semua dependensi utama dan tambahan:
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-```bash
-- **pada cmd ketika sudah ada berada di direktori program lakukan**
-cd backend
-npm install
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- **jika sudah terinstall node modules nya kembali ke path awal**
-cd..
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- **lalu lakukan**
-npm install
-npm run dev
+### `npm run eject`
 
-```
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### 4. **Jalankan Proyek**
-Gunakan perintah berikut untuk menjalankan proyek di localhost:
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-```bash
--npm start --Menjalankan React frontend menggunakan perintah react-scripts start, yaitu server pengembangan bawaan dari Create React App.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
--npm run server --Menjalankan backend server dengan berpindah direktori ke folder backend dan menjalankan file server.js menggunakan Node.js 
-(node server.js)
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
--npm run dev --Menjalankan React frontend dan Node.js backend secara paralel
-```
+## Learn More
 
-Buka browser Anda dan akses: http://localhost:3000
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
----
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-## 🛠️ Fitur Opsional
+### Code Splitting
 
-### Plugin Tailwind CSS
-Untuk fitur tambahan, seperti Form Control atau lainnya, Anda dapat menambahkan plugin Tailwind CSS.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-**Contoh: Menambahkan Plugin Form Control**
+### Analyzing the Bundle Size
 
-1. Install Plugin:
-```bash
-npm install @tailwindcss/forms
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-2. Aktifkan Plugin di `tailwind.config.js`:
-```javascript
-plugins: [require('@tailwindcss/forms')],
-```
+### Making a Progressive Web App
 
----
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-## 🔧 Bantuan
-Jika Anda menghadapi kendala saat setup atau menjalankan proyek ini, jangan ragu untuk menghubungi saya untuk bantuan lebih lanjut.
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

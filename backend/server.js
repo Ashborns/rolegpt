@@ -35,8 +35,8 @@ app.get('/api/characters', async (req, res) => {
 
 app.post('/api/characters', async (req, res) => {
   try {
-    const { name, description } = req.body;
-    const character = await rolegpt.newCharacter(name, description);
+    const { name, description, avatarUrl } = req.body;
+    const character = await rolegpt.newCharacter(name, description, avatarUrl);
     res.json(character);
   } catch (error) {
     res.status(500).json({ error: error.message });

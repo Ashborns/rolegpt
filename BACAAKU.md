@@ -40,7 +40,8 @@ ROLEGPTUI/
 ├── public/
 ├── src/
 │   ├── pages/
-│   │   ├── tampilan.js
+│   │   ├── home.js
+│   │   └── tampilan.js
 │   ├── services/
 │   │   └── api.js
 │   ├── App.css
